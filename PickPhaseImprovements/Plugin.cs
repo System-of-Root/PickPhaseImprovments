@@ -14,7 +14,7 @@ namespace PickPhaseImprovements{
     public class Plugin : BaseUnityPlugin{
         private const string ModId = "Systems.R00t.PickPhaseImprovements";
         private const string ModName = "Pick Phase Improvments";
-        public const string Version = "0.1.1";
+        public const string Version = "0.1.2";
         void Awake(){
             new Harmony(ModId).PatchAll();
             GameModeManager.AddHook(GameModeHooks.HookGameStart, _ => { PickManager.ShuffleQueue.Clear();

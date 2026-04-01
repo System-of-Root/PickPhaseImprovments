@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PickPhaseImprovements")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0114e52daf82752524a5ff159d8ef8d124d4ea18")]
 [assembly: System.Reflection.AssemblyProductAttribute("PickPhaseImprovements")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PickPhaseImprovements")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

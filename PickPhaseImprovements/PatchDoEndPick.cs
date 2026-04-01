@@ -14,7 +14,7 @@ namespace PickPhaseImprovements{
                             DrawNCards.DrawNCards.SetPickerDraws(__instance.pickrID, 
                                 PickManager.ShuffleQueue[player][0].Relative? PickManager.StoredHandSize + PickManager.ShuffleQueue[player][0].HandSize : PickManager.ShuffleQueue[player][0].HandSize);
                         }
-                        PickManager.ShuffleQueue[player][0].pickStartCallback.Invoke();
+                        PickManager.ShuffleQueue[player][0].pickStartCallback?.Invoke();
                         PickManager.ActiveCallback = PickManager.ShuffleQueue[player][0].pickEndCallback;
                         PickManager.ShuffleQueue[player].RemoveAt(0);
                         return;
