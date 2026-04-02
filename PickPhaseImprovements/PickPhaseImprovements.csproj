@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <RootNamespace>PickPhaseImprovements</RootNamespace>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <PublicizeAll>true</PublicizeAll>
     </PropertyGroup>
 
     <ItemGroup>
@@ -35,6 +36,13 @@
         <Reference Include="UnityEngine.CoreModule">
             <HintPath>\var\home\Root\.local\share\Steam\steamapps\common\ROUNDS\Rounds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
 </Project>

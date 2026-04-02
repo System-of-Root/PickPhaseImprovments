@@ -9,7 +9,8 @@ namespace PickPhaseImprovements {
         internal static Dictionary<Player,int> AdditionalPicks = new Dictionary<Player,int>();
         internal static Func<CardInfo, bool> ActiveCondition = _ => true;
         internal static Action ActiveCallback = null;
-        internal static int PickDepth = 0;
+        public static int PickDepth = 0;
+        public static CardInfo lastPickedCard;
         internal static int StoredHandSize = -1;
         public static void RegisterShuffleCard(CardInfo cardInfo, int handSize = 0, bool isRelative = false, Func<CardInfo,bool> condition = null, int count = 1, Action pickStartCallback = null, Action pickEndCallback = null) {
             RegisterShuffleCard(cardInfo,new ShuffleData(){HandSize = handSize, Relative = isRelative, Condition = condition,count = count, pickStartCallback =  pickStartCallback,pickEndCallback = pickEndCallback});
