@@ -7,6 +7,7 @@ namespace PickPhaseImprovements {
         internal static Dictionary<Player,List<ShuffleData>> ShuffleQueue = new Dictionary<Player,List<ShuffleData>>();
         internal static Dictionary<Player,List<ShuffleData>> ConditionalPicks = new Dictionary<Player,List<ShuffleData>>();
         internal static Dictionary<Player,int> AdditionalPicks = new Dictionary<Player,int>();
+        internal static Dictionary<Player,bool> PickedThisRound = new Dictionary<Player,bool>();
         internal static Func<CardInfo, bool> ActiveCondition = _ => true;
         internal static Action ActiveCallback = null;
         public static int PickDepth = 0;
@@ -54,6 +55,10 @@ namespace PickPhaseImprovements {
         public static bool RemoveConditionalPick(this Player picker, ShuffleData data){
             return ConditionalPicks.ContainsKey(picker) && ConditionalPicks[picker].Remove(data);
         }
+
+        public static int GetPlayerPickCount(this Player picker) =>
+            ConditionalPicks.ContainsKey(picker) ? ConditionalPicks[picker].Count + AdditionalPicks.GetValueOrDefault(picker) : AdditionalPicks.GetValueOrDefault(picker);
+        
         
         public struct ShuffleData : IEquatable<ShuffleData>{
             public int HandSize;

@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <PublicizeAll>True</PublicizeAll>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\PickPhaseImprovements\PickPhaseImprovements.csproj" />
+        <Reference Include="0Harmony">
+            <HintPath>..\..\..\.local\share\com.kesomannen.gale\rounds\profiles\moddev\BepInEx\core\0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>\var\mnt\300095C500959288\Rounds\Unity\Root_Cards\Assets\Scripts\Mods\dlls\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="BepInEx">
+            <HintPath>..\..\..\.local\share\com.kesomannen.gale\rounds\profiles\moddev\BepInEx\core\BepInEx.dll</HintPath>
+        </Reference>
+        <Reference Include="UnboundLib">
+            <HintPath>..\..\..\.local\share\com.kesomannen.gale\rounds\profiles\moddev\BepInEx\plugins\UnboundLib\UnboundLib.dll</HintPath>
+        </Reference>
+        <Reference Include="PickTimer">
+            <HintPath>..\..\..\.local\share\com.kesomannen.gale\rounds\profiles\Peanut Butter\BepInEx\plugins\otDan-PickTimer\PickTimer.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>\var\home\Root\.local\share\Steam\steamapps\common\ROUNDS\Rounds_Data\Managed\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>\var\home\Root\.local\share\Steam\steamapps\common\ROUNDS\Rounds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+</Project>
