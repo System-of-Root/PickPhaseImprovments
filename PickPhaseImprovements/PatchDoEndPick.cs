@@ -11,7 +11,7 @@ namespace PickPhaseImprovements{
                         PickManager.ActiveCondition = PickManager.ShuffleQueue[player][0].Condition ?? PickManager.ActiveCondition;
                         if (PickManager.ShuffleQueue[player][0].HandSize != 0){
                             PickManager.StoredHandSize = DrawNCards.DrawNCards.GetPickerDraws(__instance.pickrID);
-                            DrawNCards.DrawNCards.SetPickerDraws(__instance.pickrID, 
+                            PickManager.SetPickerDraws(__instance.pickrID, 
                                 PickManager.ShuffleQueue[player][0].Relative? PickManager.StoredHandSize + PickManager.ShuffleQueue[player][0].HandSize : PickManager.ShuffleQueue[player][0].HandSize);
                         }
                         PickManager.ShuffleQueue[player][0].pickStartCallback?.Invoke();

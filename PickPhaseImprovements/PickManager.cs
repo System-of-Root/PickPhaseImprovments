@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using UnboundLib;
+using UnityEngine;
 
 namespace PickPhaseImprovements {
     public static class PickManager {
@@ -57,7 +59,7 @@ namespace PickPhaseImprovements {
         }
 
         public static int GetPlayerPickCount(this Player picker) =>
-            ConditionalPicks.ContainsKey(picker) ? ConditionalPicks[picker].Count + AdditionalPicks.GetValueOrDefault(picker) : AdditionalPicks.GetValueOrDefault(picker);
+            ConditionalPicks.ContainsKey(picker) ? ConditionalPicks[picker].Count + CollectionExtensions.GetValueOrDefault(AdditionalPicks, picker) : CollectionExtensions.GetValueOrDefault(AdditionalPicks, picker);
         
         
         public struct ShuffleData : IEquatable<ShuffleData>{
@@ -79,6 +81,13 @@ namespace PickPhaseImprovements {
             public override int GetHashCode(){
                 return HashCode.Combine(HandSize, Relative, Condition);
             }
+        }
+
+
+        internal static void SetPickerDraws(int pickerIDToSet, int drawCountToSet){
+            
+            drawCountToSet = Mathf.Clamp(drawCountToSet, 1, 30);
+            NetworkingManager.RPC(typeof (DrawNCards.DrawNCards), "RPCA_SetPickerDraws", (object) pickerIDToSet, (object) drawCountToSet);
         }
     }
 }

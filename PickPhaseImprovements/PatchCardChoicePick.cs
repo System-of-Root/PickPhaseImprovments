@@ -11,7 +11,7 @@ namespace PickPhaseImprovements{
             PickManager.PickDepth++;
             
             if (PickManager.StoredHandSize != -1){
-                DrawNCards.DrawNCards.SetPickerDraws(__instance.pickrID,PickManager.StoredHandSize);
+                PickManager.SetPickerDraws(__instance.pickrID,PickManager.StoredHandSize);
                 PickManager.StoredHandSize = -1;
             }
             PickManager.ActiveCallback?.Invoke();
