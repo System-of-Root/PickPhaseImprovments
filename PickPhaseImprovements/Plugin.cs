@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
@@ -19,10 +21,11 @@ namespace PickPhaseImprovements{
     public class Plugin : BaseUnityPlugin{
         private const string ModId = "Systems.R00t.PickPhaseImprovements";
         private const string ModName = "Pick Phase Improvments";
-        public const string Version = "0.2.2";
+        public const string Version = "0.3.0";
         public static ConfigEntry<int> PickNModeConfig;
         public static PickNMode PickNModeSetting;
         private static UnityEngine.UI.Slider slider = null;
+        private static Harmony harmony = null;
 
         public enum PickNMode{
             Normal,
@@ -33,18 +36,43 @@ namespace PickPhaseImprovements{
         void Awake(){
             PickNModeConfig = Config.Bind(ModId, "PickNModeSetting", 0);
             PickNModeSetting = (PickNMode)PickNModeConfig.Value;
-            new Harmony(ModId).PatchAll();
+            harmony = new Harmony(ModId);
+            harmony.PatchAll();
             GameModeManager.AddHook(GameModeHooks.HookGameStart, ResetData,Priority.First);
             GameModeManager.AddHook(GameModeHooks.HookRoundEnd, NewRound);
             ModdingUtils.Utils.Cards.instance.AddCardValidationFunction(CheckCondition);
+            ModdingUtils.Utils.Cards.instance.AddCardValidationFunction(LockGunToDefualtCheck);
             Unbound.RegisterMenu(ModName, () => { }, ModGUI, null, false);
             Unbound.RegisterHandshake(ModId, () => {
                 if (PhotonNetwork.IsMasterClient) NetworkingManager.RPC_Others(typeof(Plugin),nameof(SyncSettings), (int)PickNModeSetting);
             });
+
+        }
+
+        IEnumerator Start(){
+            for(int _ = 0; _<5;_++) yield return null;
+            
+            // get the MethodBase of the original
+            var SpawnUniqueCard = typeof(CardChoice).GetMethod(nameof(CardChoice.SpawnUniqueCard),BindingFlags.Instance| BindingFlags.NonPublic);
+            harmony.Unpatch(SpawnUniqueCard, HarmonyPatchType.Prefix, "pykess.rounds.plugins.cardchoicespawnuniquecardpatch");
         }
 
         bool CheckCondition(Player _, CardInfo cardInfo){
             return PickManager.ActiveCondition(cardInfo);
+        }
+
+        bool LockGunToDefualtCheck(Player player, CardInfo card){
+            Holdable holdable = player.data.GetComponent<Holding>().holdable;
+            if(holdable) 
+            {
+                Gun component2 = holdable.GetComponent<Gun>();
+                Gun component3 = card.GetComponent<Gun>();
+                if(component3 && component2 && component3.lockGunToDefault && component2.lockGunToDefault) 
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private IEnumerator NewRound(IGameModeHandler _){

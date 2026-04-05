@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using UnboundLib;
+using UnboundLib.Utils;
 using UnityEngine;
+using CollectionExtensions = System.Collections.Generic.CollectionExtensions;
 
 namespace PickPhaseImprovements {
     public static class PickManager {
@@ -83,6 +86,34 @@ namespace PickPhaseImprovements {
             }
         }
 
+
+
+        internal struct HandModification{
+            internal Func<CardInfo[], CardInfo[]> Func;
+            internal int Priority;
+        }
+        
+        public enum ValidationResult{
+            Valid,
+            Invalid,
+            CurrentlyInvalid,
+        }
+
+        public static bool Synchronous = false;
+        internal static List<Func<CardInfo[],CardInfo,ValidationResult> > DrawValidationFunctions = new List<Func<CardInfo[],CardInfo,ValidationResult>>();
+        internal static List<HandModification> HandModifications = new List<HandModification>();
+        internal static List<Action<CardInfo[]>> FinalizationActions = new List<Action<CardInfo[]>>();
+        internal static Dictionary<CardInfo,object[]> CustomPhotonData = new Dictionary<CardInfo,object[]>();
+        
+        public static void RegisterDrawValidationFunction(Func<CardInfo[],CardInfo,ValidationResult> func)=> DrawValidationFunctions.Add(func);
+
+        public static void RegisterHandModificationFunction(Func<CardInfo[], CardInfo[]> func, int priority = Priority.Normal){
+            HandModifications.Add(new HandModification{Func = func, Priority = priority});
+            HandModifications.Sort((a, b) => b.Priority - a.Priority);
+        }
+        public static void RegisterHandFinalizationAction(Action<CardInfo[]> func) => FinalizationActions.Add(func);
+        public static void RegisterCustomPhotonData(CardInfo card, params object[] data) => CustomPhotonData[card] = data;
+        
 
         internal static void SetPickerDraws(int pickerIDToSet, int drawCountToSet){
             
