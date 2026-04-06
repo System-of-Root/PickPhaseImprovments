@@ -104,6 +104,7 @@ namespace PickPhaseImprovements {
         internal static List<HandModification> HandModifications = new List<HandModification>();
         internal static List<Action<CardInfo[]>> FinalizationActions = new List<Action<CardInfo[]>>();
         internal static Dictionary<CardInfo,object[]> CustomPhotonData = new Dictionary<CardInfo,object[]>();
+        internal static Dictionary<CardInfo,string> CustomApplicationName = new Dictionary<CardInfo,string>();
         
         public static void RegisterDrawValidationFunction(Func<CardInfo[],CardInfo,ValidationResult> func)=> DrawValidationFunctions.Add(func);
 
@@ -113,7 +114,7 @@ namespace PickPhaseImprovements {
         }
         public static void RegisterHandFinalizationAction(Action<CardInfo[]> func) => FinalizationActions.Add(func);
         public static void RegisterCustomPhotonData(CardInfo card, params object[] data) => CustomPhotonData[card] = data;
-        
+        public static void  RegisterCustomApplicationName(CardInfo card, string name) => CustomApplicationName[card] = name;
 
         internal static void SetPickerDraws(int pickerIDToSet, int drawCountToSet){
             

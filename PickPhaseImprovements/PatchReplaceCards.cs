@@ -88,7 +88,8 @@ namespace PickPhaseImprovements{
                 {
                     cardChoice.spawnedCards.Add(cardChoice.SpawnUniqueCard(cardChoice.children[GeneratingCard].transform.position, cardChoice.children[GeneratingCard].transform.rotation));
                     cardChoice.spawnedCards[GeneratingCard].AddComponent<PublicInt>().theInt = GeneratingCard;
-                    yield return (object) new WaitForSecondsRealtime(PickNCards.PickNCards.delay);
+                    if(PickNCards.PickNCards.delay > 0)
+                        yield return (object) new WaitForSecondsRealtime(PickNCards.PickNCards.delay);
                 }
                 foreach (var finalizationAction in PickManager.FinalizationActions){
                     finalizationAction.Invoke(GeneratedCards.ToArray());
