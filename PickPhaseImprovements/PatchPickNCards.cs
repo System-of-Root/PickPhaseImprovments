@@ -7,6 +7,7 @@ namespace PickPhaseImprovements{
         public static void Prefix(){
             if (Plugin.PickNModeSetting == Plugin.PickNMode.Uncollated)
                 PickNCards.PickNCards.extraPicksInPorgress = true;
+            
         }
     }
 }

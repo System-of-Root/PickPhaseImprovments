@@ -24,6 +24,9 @@
         <Reference Include="ModdingUtils">
             <HintPath>..\..\..\.local\share\com.kesomannen.gale\rounds\profiles\moddev\BepInEx\plugins\Pykess-ModdingUtils\ModdingUtils.dll</HintPath>
         </Reference>
+        <Reference Include="CardChoiceSpawnUniqueCardPatch">
+            <HintPath>..\..\..\.local\share\com.kesomannen.gale\rounds\profiles\moddev\BepInEx\plugins\Pykess-CardChoiceSpawnUniqueCardPatch\CardChoiceSpawnUniqueCardPatch.dll</HintPath>
+        </Reference>
         <Reference Include="PickNCards">
             <HintPath>..\..\..\.local\share\com.kesomannen.gale\rounds\profiles\moddev\BepInEx\plugins\Pykess-Pick_N_Cards\PickNCards.dll</HintPath>
         </Reference>
@@ -41,6 +44,9 @@
         </Reference>
         <Reference Include="UnityEngine.UI">
             <HintPath>\var\home\Root\.local\share\Steam\steamapps\common\ROUNDS\Rounds_Data\Managed\UnityEngine.UI.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.Physics2DModule">
+            <HintPath>\var\home\Root\.local\share\Steam\steamapps\common\ROUNDS\Rounds_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
         </Reference>
         <Reference Include="Photon3Unity3D">
             <HintPath>\var\home\Root\.local\share\Steam\steamapps\common\ROUNDS\Rounds_Data\Managed\Photon3Unity3D.dll</HintPath>
