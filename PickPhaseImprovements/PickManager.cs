@@ -18,6 +18,11 @@ namespace PickPhaseImprovements {
         public static int PickDepth = 0;
         public static CardInfo lastPickedCard;
         internal static int StoredHandSize = -1;
+
+        public static bool IsShuffleCard(CardInfo cardInfo){
+            return  ShuffleCards.ContainsKey(cardInfo);
+        }
+        
         public static void RegisterShuffleCard(CardInfo cardInfo, int handSize = 0, bool isRelative = false, Func<CardInfo,bool> condition = null, int count = 1, Action pickStartCallback = null, Action pickEndCallback = null) {
             RegisterShuffleCard(cardInfo,new ShuffleData(){HandSize = handSize, Relative = isRelative, Condition = condition,count = count, pickStartCallback =  pickStartCallback,pickEndCallback = pickEndCallback});
         }
@@ -102,8 +107,10 @@ namespace PickPhaseImprovements {
         public static bool Synchronous = false;
         internal static List<Func<CardInfo[],CardInfo,ValidationResult> > DrawValidationFunctions = new List<Func<CardInfo[],CardInfo,ValidationResult>>();
         internal static List<HandModification> HandModifications = new List<HandModification>();
+        internal static List<Action<GameObject>> CardSpawnCallbacks = new List<Action<GameObject>>();
         internal static List<Action<CardInfo[]>> FinalizationActions = new List<Action<CardInfo[]>>();
         internal static Dictionary<CardInfo,object[]> CustomPhotonData = new Dictionary<CardInfo,object[]>();
+        internal static Dictionary<CardInfo,string> AlternetSpawnName = new Dictionary<CardInfo,string>();
         
         public static void RegisterDrawValidationFunction(Func<CardInfo[],CardInfo,ValidationResult> func)=> DrawValidationFunctions.Add(func);
 
@@ -111,8 +118,10 @@ namespace PickPhaseImprovements {
             HandModifications.Add(new HandModification{Func = func, Priority = priority});
             HandModifications.Sort((a, b) => b.Priority - a.Priority);
         }
+        public static void RegisterCardSpawnCallbacks(Action<GameObject> func) => CardSpawnCallbacks.Add(func);
         public static void RegisterHandFinalizationAction(Action<CardInfo[]> func) => FinalizationActions.Add(func);
         public static void RegisterCustomPhotonData(CardInfo card, params object[] data) => CustomPhotonData[card] = data;
+        public static void RegisterAlternetSpawnName(CardInfo card, string name) => AlternetSpawnName[card] = name;
         
 
         internal static void SetPickerDraws(int pickerIDToSet, int drawCountToSet){
