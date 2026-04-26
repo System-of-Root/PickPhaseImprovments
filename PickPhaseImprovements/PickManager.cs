@@ -15,6 +15,8 @@ namespace PickPhaseImprovements {
         internal static Dictionary<Player,bool> PickedThisRound = new Dictionary<Player,bool>();
         internal static Func<CardInfo, bool> ActiveCondition = _ => true;
         internal static Action ActiveCallback = null;
+        internal static Dictionary<Player,List<LimitedDraw>> LimitedDrawQueue = new Dictionary<Player,List<LimitedDraw>>();
+        internal static LimitedDraw? ActiveLimitedDraw = null;
         public static int PickDepth = 0;
         public static CardInfo lastPickedCard;
         internal static int StoredHandSize = -1;
@@ -32,6 +34,39 @@ namespace PickPhaseImprovements {
         public static void QueueShuffleForPicker(Player picker, int handSize = 0, bool isRelative = false, Func<CardInfo, bool> condition = null){
             QueueShuffleForPicker(picker, new ShuffleData(){HandSize = handSize, Relative = isRelative, Condition = condition});
             
+        }
+
+        public static void QueueLimitedDraw(Player picker, List<CardInfo> deck, bool isShuffle = true, bool ignoreRestrictions = false, int handSize = 0, bool isRelative = false,  Action pickStartCallback = null, Action pickEndCallback = null){
+            if(!LimitedDrawQueue.ContainsKey(picker)) LimitedDrawQueue[picker] = new List<LimitedDraw>();
+            LimitedDrawQueue[picker].Add(new LimitedDraw(){deck=deck, isShuffle = isShuffle, ignoreRestrictions = ignoreRestrictions,data = new ShuffleData(){ HandSize = handSize, Relative = isRelative, pickStartCallback = pickStartCallback, pickEndCallback = pickEndCallback }});
+        }
+
+        internal struct LimitedDraw : IEquatable<LimitedDraw>{
+
+            internal List<CardInfo> deck;
+            internal bool isShuffle;
+            internal bool ignoreRestrictions;
+            internal ShuffleData data;
+            
+            public bool Equals(LimitedDraw other){
+                return deck.Equals(other.deck) && isShuffle == other.isShuffle && ignoreRestrictions == other.ignoreRestrictions;
+            }
+
+            public override bool Equals(object? obj){
+                return obj is LimitedDraw other && Equals(other);
+            }
+
+            public override int GetHashCode(){
+                return HashCode.Combine(deck, isShuffle, ignoreRestrictions);
+            }
+
+            public static bool operator ==(LimitedDraw left, LimitedDraw right){
+                return left.Equals(right);
+            }
+
+            public static bool operator !=(LimitedDraw left, LimitedDraw right){
+                return !left.Equals(right);
+            }
         }
         public static void QueueShuffleForPicker(Player picker, ShuffleData data){ 
             if(!ShuffleQueue.ContainsKey(picker)) {

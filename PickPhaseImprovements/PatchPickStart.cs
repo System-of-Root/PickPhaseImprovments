@@ -1,3 +1,4 @@
+using System.Linq;
 using HarmonyLib;
 
 namespace PickPhaseImprovements{
@@ -23,6 +24,26 @@ namespace PickPhaseImprovements{
                         PickManager.QueueShuffleForPicker(player,data);
                     }
 
+                }
+            }
+            
+            foreach (Player player in PickManager.LimitedDrawQueue.Keys){
+                if (__instance.pickerType == PickerType.Player ? player.playerID == __instance.pickrID : player.teamID == __instance.pickrID){
+                    if (PickManager.LimitedDrawQueue[player].Count(ld => !ld.isShuffle) > 0){
+                        __instance.picks++;
+                        PickManager.LimitedDraw limitedDraw = PickManager.LimitedDrawQueue[player].First(ld => !ld.isShuffle);
+                        PickManager.LimitedDrawQueue[player].Remove(limitedDraw);
+                        if (player.data.view.IsMine)
+                            PickManager.ActiveLimitedDraw = limitedDraw;
+                        if (limitedDraw.data.HandSize != 0){
+                            PickManager.StoredHandSize = DrawNCards.DrawNCards.GetPickerDraws(__instance.pickrID);
+                            PickManager.SetPickerDraws(__instance.pickrID, 
+                                limitedDraw.data.Relative? PickManager.StoredHandSize + limitedDraw.data.HandSize : limitedDraw.data.HandSize);
+                        }
+                        limitedDraw.data.pickStartCallback?.Invoke();
+                        PickManager.ActiveCallback = limitedDraw.data.pickEndCallback;
+                        return;
+                    }
                 }
             }
         }

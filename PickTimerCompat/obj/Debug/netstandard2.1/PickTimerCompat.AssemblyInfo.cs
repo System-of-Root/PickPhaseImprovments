@@ -142,7 +142,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PickTimerCompat")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+12075c628855130f06cf2cbe0d8a1526fb5bccc7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ef56d9c435f1b9b270f17cf0682756298f74a57e")]
 [assembly: System.Reflection.AssemblyProductAttribute("PickTimerCompat")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PickTimerCompat")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

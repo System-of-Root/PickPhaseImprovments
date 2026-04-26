@@ -15,7 +15,8 @@ namespace PickPhaseImprovements{
                 PickManager.StoredHandSize = -1;
             }
             PickManager.ActiveCallback?.Invoke();
-            PickManager.ActiveCallback = null; 
+            PickManager.ActiveCallback = null;
+            PickManager.ActiveLimitedDraw = null;
         }
     }
 }

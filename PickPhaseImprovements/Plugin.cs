@@ -21,7 +21,7 @@ namespace PickPhaseImprovements{
     public class Plugin : BaseUnityPlugin{
         private const string ModId = "Systems.R00t.PickPhaseImprovements";
         private const string ModName = "Pick Phase Improvments";
-        public const string Version = "0.3.1";
+        public const string Version = "0.4.1";
         public static ConfigEntry<int> PickNModeConfig;
         public static PickNMode PickNModeSetting;
         private static UnityEngine.UI.Slider slider = null;
@@ -89,6 +89,7 @@ namespace PickPhaseImprovements{
             PickManager.AdditionalPicks.Clear();
             PickManager.ActiveCondition = _ => true;
             PickManager.StoredHandSize = -1;
+            PickManager.LimitedDrawQueue.Clear();
             yield return NewRound(_);
         }
 

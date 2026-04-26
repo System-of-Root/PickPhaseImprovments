@@ -7,7 +7,6 @@ using Photon.Pun;
 using SoundImplementation;
 using UnboundLib;
 using UnboundLib.Networking;
-using UnboundLib.Utils;
 using UnityEngine;
 
 namespace PickPhaseImprovements{
@@ -51,7 +50,15 @@ namespace PickPhaseImprovements{
             yield return (object) new WaitForSecondsRealtime(0.2f);
             GeneratedCards.Clear();
             if (cardChoice.picks > 0){
-                List<CardInfo> ValidCards = ModdingUtils.Utils.Cards.instance.GetAllCardsWithCondition(cardChoice, player, (p, c) => ModdingUtils.Utils.Cards.instance.PlayerIsAllowedCard(c, p)).ToList();
+                List<CardInfo> ValidCards;
+                if (PickManager.ActiveLimitedDraw is { } limitedDraw){
+                    ValidCards = limitedDraw.deck;
+                    if(!limitedDraw.ignoreRestrictions)
+                        ValidCards = ModdingUtils.Utils.Cards.instance.GetAllCardsWithCondition(ValidCards.ToArray(),player,(p, c) => ModdingUtils.Utils.Cards.instance.PlayerIsAllowedCard(c, p)).ToList();
+                }
+                else{
+                    ValidCards = ModdingUtils.Utils.Cards.instance.GetAllCardsWithCondition(cardChoice, player, (p, c) => ModdingUtils.Utils.Cards.instance.PlayerIsAllowedCard(c, p)).ToList();
+                }
                 List<CardInfo> TemperarilyRemoved = new List<CardInfo>();
                 while (GeneratedCards.Count < cardChoice.children.Length){
                     CardInfo randomCard;
