@@ -21,9 +21,11 @@ namespace PickPhaseImprovements{
     public class Plugin : BaseUnityPlugin{
         private const string ModId = "Systems.R00t.PickPhaseImprovements";
         private const string ModName = "Pick Phase Improvments";
-        public const string Version = "0.4.1";
+        public const string Version = "0.4.2";
         public static ConfigEntry<int> PickNModeConfig;
         public static PickNMode PickNModeSetting;
+        public static int BonusStartingPicks;
+        public static ConfigEntry<int> BonusStartingPicksConfig;
         private static UnityEngine.UI.Slider slider = null;
         private static Harmony harmony = null;
 
@@ -36,6 +38,8 @@ namespace PickPhaseImprovements{
         void Awake(){
             PickNModeConfig = Config.Bind(ModId, "PickNModeSetting", 0);
             PickNModeSetting = (PickNMode)PickNModeConfig.Value;
+            BonusStartingPicksConfig = Config.Bind(ModId, "BonusStartingPicksSetting", 0);
+            BonusStartingPicks = BonusStartingPicksConfig.Value;
             harmony = new Harmony(ModId);
             harmony.PatchAll();
             GameModeManager.AddHook(GameModeHooks.HookGameStart, ResetData,Priority.First);
@@ -44,7 +48,7 @@ namespace PickPhaseImprovements{
             ModdingUtils.Utils.Cards.instance.AddCardValidationFunction(LockGunToDefualtCheck);
             Unbound.RegisterMenu(ModName, () => { }, ModGUI, null, false);
             Unbound.RegisterHandshake(ModId, () => {
-                if (PhotonNetwork.IsMasterClient) NetworkingManager.RPC_Others(typeof(Plugin),nameof(SyncSettings), (int)PickNModeSetting);
+                if (PhotonNetwork.IsMasterClient) NetworkingManager.RPC_Others(typeof(Plugin),nameof(SyncSettings), (int)PickNModeSetting, BonusStartingPicks);
             });
 
         }
@@ -85,6 +89,11 @@ namespace PickPhaseImprovements{
         private IEnumerator ResetData(IGameModeHandler _){
             PickNCards.PickNCards.extraPicksInPorgress = false;
             PickManager.ShuffleQueue.Clear();
+            foreach (var player in PlayerManager.instance.players){
+                for(int i = 0; i<BonusStartingPicks;i++){
+                    PickManager.QueueShuffleForPicker(player);
+                }
+            }
             PickManager.ConditionalPicks.Clear();
             PickManager.AdditionalPicks.Clear();
             PickManager.ActiveCondition = _ => true;
@@ -95,14 +104,19 @@ namespace PickPhaseImprovements{
 
 
         [UnboundRPC]
-        private static void SyncSettings(int pickNMode)
+        private static void SyncSettings(int pickNMode, int bonusStatingPicks)
         {
             PickNModeSetting = (PickNMode)pickNMode;
+            BonusStartingPicks = bonusStatingPicks;
         }
 
 
         public void ModGUI(GameObject menu){
             MenuHandler.CreateText(ModName+" Settings:", menu,out _,80,alignmentOptions:TextAlignmentOptions.Center);
+            MenuHandler.CreateSlider("Bonus Starting Picks", menu, 30, 0, 10, BonusStartingPicks, (val) => {
+                BonusStartingPicksConfig.Value = (int)val;
+                BonusStartingPicks = (int)val;
+            }, out _, true);
             MenuHandler.CreateText("Pick N Compatibility Mode", menu,out _,60,alignmentOptions:TextAlignmentOptions.Center);
             MenuHandler.CreateSlider(PickNModeSetting.ToString(), menu, 30, 0, 2, (int)PickNModeSetting, (val) => {
                 PickNModeConfig.Value=(int)val;
