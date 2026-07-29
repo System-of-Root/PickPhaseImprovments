@@ -21,7 +21,7 @@ namespace PickPhaseImprovements{
     public class Plugin : BaseUnityPlugin{
         private const string ModId = "Systems.R00t.PickPhaseImprovements";
         private const string ModName = "Pick Phase Improvments";
-        public const string Version = "0.4.2";
+        public const string Version = "0.4.3";
         public static ConfigEntry<int> PickNModeConfig;
         public static PickNMode PickNModeSetting;
         public static int BonusStartingPicks;

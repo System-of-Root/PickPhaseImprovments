@@ -64,7 +64,7 @@ namespace PickPhaseImprovements{
                     CardInfo randomCard;
                     if (ValidCards.Count > 0){
                         randomCard = CardChoicePatchGetRanomCard.OrignialGetRanomCard(ValidCards.ToArray()).GetComponent<CardInfo>();
-                        if (GeneratedCards.Count > 0){
+                        {
                             bool valid = true;
                             foreach (var func in PickManager.DrawValidationFunctions){
                                 var result = func(GeneratedCards.ToArray(), randomCard);
