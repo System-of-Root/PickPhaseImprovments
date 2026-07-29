@@ -113,12 +113,12 @@ namespace PickPhaseImprovements{
 
         public void ModGUI(GameObject menu){
             MenuHandler.CreateText(ModName+" Settings:", menu,out _,80,alignmentOptions:TextAlignmentOptions.Center);
-            MenuHandler.CreateSlider("Bonus Starting Picks", menu, 30, 0, 10, BonusStartingPicks, (val) => {
+            MenuHandler.CreateSlider("Bonus Starting Picks", menu, 30, 0, 10, BonusStartingPicksConfig.Value, (val) => {
                 BonusStartingPicksConfig.Value = (int)val;
                 BonusStartingPicks = (int)val;
             }, out _, true);
             MenuHandler.CreateText("Pick N Compatibility Mode", menu,out _,60,alignmentOptions:TextAlignmentOptions.Center);
-            MenuHandler.CreateSlider(PickNModeSetting.ToString(), menu, 30, 0, 2, (int)PickNModeSetting, (val) => {
+            MenuHandler.CreateSlider(PickNModeSetting.ToString(), menu, 30, 0, 2, PickNModeConfig.Value, (val) => {
                 PickNModeConfig.Value=(int)val;
                 PickNModeSetting = (PickNMode)PickNModeConfig.Value;
                 slider.transform.parent.GetChild(slider.transform.parent.childCount - 1).GetComponent<TextMeshProUGUI>().text = PickNModeSetting.ToString();
